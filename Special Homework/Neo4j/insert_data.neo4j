@@ -1,0 +1,34 @@
+CREATE(Mama:Person {name:'Franziska Meier', born: 1965, working: true, salary: 85000})
+CREATE(Papa:Person {name:'Frizli Meier', born: 1962, working: true, salary: 60000})
+CREATE(Daughter:Person {name:'Vreni Meier', born: 1992, working: true, salary: 65000})
+CREATE(Son:Person {name:'Andy Meier', born: 1994, working: true, salary: 60000})
+CREATE(Grandfather:Person{name: 'Walter Meier', born: 1924, working: false, salary: 50000})
+CREATE(Grandmother:Person{name: 'Sara Meier', born: 1924, working: false, salary: 50000})
+CREATE (Mama) -[:MARRIED_TO {since: 1990}] -> (Papa),
+ (Daughter) -[:CHILD_OF] -> (Mama),
+ (Daughter) -[:CHILD_OF] -> (Papa),
+ (Son) -[:CHILD_OF] -> (Mama),
+ (Son) -[:CHILD_OF] -> (Papa),
+ (Papa) -[:CHILD_OF] -> (Grandfather),
+ (Papa) -[:CHILD_OF] -> (Grandmother),
+ (Grandmother) -[:MARRIED_TO{since: 1961}] -> (Grandfather)
+
+CREATE(familyHome: House {adress:'Luzernerstrasse 23', ZIP: 1234, city: 'Testcity'})
+CREATE(rentFlat: Flat {adress:'Luzernerstrasse 21', ZIP: 1233, city: 'Citonia'})
+
+CREATE (Mama) -[:LIVES_IN {rent: 3500}] -> (familyHome),
+    (Papa) -[:LIVES_IN{rent: 3500}] -> (familyHome),
+    (Daughter) -[:LIVES_IN{rent: 3500}] -> (familyHome),
+    (Son) -[:LIVES_IN{rent: 3500}] -> (familyHome),
+    (Grandfather) -[:LIVES_IN{rent: 1500}] -> (rentFlat),
+    (Grandmother) -[:LIVES_IN{rent: 1500}] -> (rentFlat)
+
+MATCH p = () return p
+
+// sample complex query
+// WITH ['Keanu Reeves', 'Hugo Weaving', 'Emil Eifrem'] as names
+// MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+// WHERE p.name in names
+// WITH m, size(names) as inputCnt, count(DISTINCT p) as cnt
+// WHERE cnt = inputCnt
+// RETURN m
